@@ -1,0 +1,1 @@
+export type ForwardedFromTypes = "User" | "Channel" | "Bot";

@@ -1,0 +1,1 @@
+export type LiveLocationStatusTypes = "Stopped" /* starter time */ | "Live" /* the time in seconds */;

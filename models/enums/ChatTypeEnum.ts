@@ -1,0 +1,1 @@
+export type chatTypes = "User" | "Group" | "Channel" | "Bot";

@@ -1,0 +1,1 @@
+export type ButtonSelectionTypes = "TextOnly" | "TextImgThu" | "TextImgBig";

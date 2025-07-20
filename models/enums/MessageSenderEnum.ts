@@ -1,0 +1,1 @@
+export type MessageSenderTypes = "User" | "Bot";

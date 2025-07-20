@@ -1,0 +1,1 @@
+export type ButtonCalendarTypes = "DatePersian" | "DateGregorian";
