@@ -1,1 +1,1 @@
-export type UpdateTypes = "UpdatedMessage" | "NewMessage" | "RemoveMessage" | "StartedBot" | "StoppedBot" | "UpdatedPayment";
+export type UpdateTypes = "UpdatedMessage" | "NewMessage" | "RemovedMessage" | "StartedBot" | "StoppedBot" | "UpdatedPayment";

@@ -25,4 +25,5 @@ export interface Message {
     contact_message?: ContactMessage;
     poll?: Poll;
     live_location?: LiveLocation;
+    chat_id: string;
 }

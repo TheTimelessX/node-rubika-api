@@ -40,7 +40,8 @@ exports.Connection = void 0;
 var axios = require("axios");
 var Connection = /** @class */ (function () {
     function Connection(token, emitter) {
-        this.url = "https://botapi.rubika.ir/v3/".concat(token);
+        this.token = token;
+        this.url = "https://botapi.rubika.ir/v3/".concat(this.token);
         this.theEmitter = emitter;
     }
     Connection.prototype.receiveUpdate = function () {
@@ -49,13 +50,43 @@ var Connection = /** @class */ (function () {
             if (callback === void 0) { callback = function () { }; }
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, axios.post("https://botapi.rubika.ir/v3/BAIDD0ENHSSABISFPXKXFTUXTHYULOXXDBHOPBVNLGPZGTJDHQWKCUSWYSSNYMZP/getUpdates").then(function (resp) { return __awaiter(_this, void 0, void 0, function () {
+                    case 0: return [4 /*yield*/, axios.post("https://botapi.rubika.ir/v3/".concat(this.token, "/getUpdates"), "{}", { headers: { "Content-Type": "application/json" } }).then(function (resp) { return __awaiter(_this, void 0, void 0, function () {
                             return __generator(this, function (_a) {
                                 if (resp.data.status == "OK") {
                                     callback({
                                         updates: resp.data.data.updates,
                                         next_offset_id: resp.data.data.next_offset_id
                                     });
+                                    return [2 /*return*/];
+                                }
+                                else {
+                                    callback({
+                                        updates: [],
+                                        next_offset_id: ""
+                                    });
+                                    this.theEmitter.emit("error", resp.data);
+                                    return [2 /*return*/];
+                                }
+                                return [2 /*return*/];
+                            });
+                        }); })];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Connection.prototype.execute = function (method_1, input_1) {
+        return __awaiter(this, arguments, void 0, function (method, input, callback) {
+            var _this = this;
+            if (callback === void 0) { callback = function () { }; }
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, axios.post("".concat(this.url, "/").concat(method), JSON.stringify(input), { headers: { "Content-Type": "application/json" } }).then(function (resp) { return __awaiter(_this, void 0, void 0, function () {
+                            return __generator(this, function (_a) {
+                                if (resp.data.status == "OK") {
+                                    callback(resp.data);
                                     return [2 /*return*/];
                                 }
                                 else {
@@ -75,11 +106,3 @@ var Connection = /** @class */ (function () {
     return Connection;
 }());
 exports.Connection = Connection;
-var token = "BAIDD0ENHSSABISFPXKXFTUXTHYULOXXDBHOPBVNLGPZGTJDHQWKCUSWYSSNYMZP";
-var n = new Connection(token);
-n.receiveUpdate(function (msgs) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        console.log(msgs.updates[0]);
-        return [2 /*return*/];
-    });
-}); });
