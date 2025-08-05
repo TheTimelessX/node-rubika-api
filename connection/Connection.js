@@ -83,7 +83,7 @@ var Connection = /** @class */ (function () {
             if (callback === void 0) { callback = function () { }; }
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, axios.post("".concat(this.url, "/").concat(method), JSON.stringify(input), { headers: { "Content-Type": "application/json" } }).then(function (resp) { return __awaiter(_this, void 0, void 0, function () {
+                    case 0: return [4 /*yield*/, axios.post("".concat(this.url, "/").concat(method), input).then(function (resp) { return __awaiter(_this, void 0, void 0, function () {
                             return __generator(this, function (_a) {
                                 if (resp.data.status == "OK") {
                                     callback(resp.data);

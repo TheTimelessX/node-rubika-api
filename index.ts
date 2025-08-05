@@ -2,6 +2,7 @@ import { Connection } from "./connection/Connection";
 import { Update } from "./models/updates/Update";
 import { Message } from "./models/updates/Message";
 import { PaymentStatus } from "./models/PaymentStatus";
+import { SendMessageCallback, SendMessageOptions } from "./callbacks/sendMessage";
 import { EventEmitter } from "events";
 
 interface ConstructorOptions {
@@ -79,7 +80,7 @@ export class NodeRubikaApi extends EventEmitter {
                 if (theEvents.includes("close")){ clearInterval(this.loopInterval); process.off("uncaughtException", () => {}); return; }
                 if (!process.eventNames().includes("uncaughtException")){ process.on("uncaughtException", async (err) => { this.emit("error", err); }) }
                 let lastMessage = theMsg.updates[theMsg.updates.length - 1];
-                if (lastMessage.type == "NewMessage"){
+                if (lastMessage?.type == "NewMessage"){
                     if (!this.msgids.includes(lastMessage.new_message?.message_id)){
                         if (theEvents.includes("message")){
                             lastMessage.new_message.chat_id = lastMessage.chat_id;
@@ -88,7 +89,7 @@ export class NodeRubikaApi extends EventEmitter {
                             return;
                         }
                     }
-                } else if (lastMessage.type == "RemovedMessage"){
+                } else if (lastMessage?.type == "RemovedMessage"){
                     if (theEvents.includes("removedMessage")){
                         if (lastMessage.removed_message_id){
                             if (!this.rmmsgs.includes(lastMessage.removed_message_id)){
@@ -98,12 +99,12 @@ export class NodeRubikaApi extends EventEmitter {
                             }
                         }
                     }
-                } else if (lastMessage.type == "StartedBot" || lastMessage.type == "StoppedBot"){
+                } else if (lastMessage?.type == "StartedBot" || lastMessage?.type == "StoppedBot"){
                     if (theEvents.includes("started") || theEvents.includes("stopped")){
-                        this.emit(lastMessage.type == "StartedBot" ? "started" : "stopped", lastMessage);
+                        this.emit(lastMessage?.type == "StartedBot" ? "started" : "stopped", lastMessage);
                         return;
                     }
-                } else if (lastMessage.type == "UpdatedMessage"){
+                } else if (lastMessage?.type == "UpdatedMessage"){
                     if (theEvents.includes("updatedMessage")){
                         if (lastMessage.updated_message){
                             if (!Object.keys(this.updmsg).includes(lastMessage.updated_message.message_id.toString())){
@@ -119,7 +120,7 @@ export class NodeRubikaApi extends EventEmitter {
                             }
                         }
                     }
-                } else if (lastMessage.type == "UpdatedPayment"){
+                } else if (lastMessage?.type == "UpdatedPayment"){
                     if (theEvents.includes("updatedPayment")){
                         if (lastMessage.updated_payment){
                             if (!this.paymsg.includes(lastMessage.updated_payment.payment_id)){
@@ -135,19 +136,77 @@ export class NodeRubikaApi extends EventEmitter {
         }, this.opts.polling_interval);
     }
 
-    async sendMessage(){
-        await this.connection.execute("sendPoll", { "token": this.token,"question": "fff", "options": ["d", "g"]}, async (r) => {console.log(r)})
+    sendMessage(chat_id: string, text: string, options: SendMessageOptions, callback: (data: SendMessageCallback) => void): Promise<void>;
+    sendMessage(chat_id: string, text: string, options: SendMessageOptions): Promise<void>;
+    sendMessage(chat_id: string, text: string, callback: (data: SendMessageCallback) => void): Promise<void>;
+    sendMessage(chat_id: string, text: string): Promise<void>;
+
+    async sendMessage(...args){
+        if (args.length == 4){
+            await this.connection.execute("sendMessage", {
+                chat_id: args[0],
+                text: args[1],
+                reply_to_mesage_id: args[2]?.reply_to_mesage_id,
+                inline_keypad: args[2]?.inline_keypad,
+                chat_keypad: args[2]?.chat_keypad,
+                chat_keypad_type: args[2]?.chat_keypad_type,
+                disable_notification: [undefined, null].includes(args[2]?.disable_notification) ? false : args[2]?.disable_notification
+            }, async (r) => {
+                args[3](r.data);
+            })
+        } else if (args.length == 3){
+            if (typeof args[2] == "function"){
+                await this.connection.execute("sendMessage", {
+                    chat_id: args[0],
+                    text: args[1]
+                }, async (r) => {
+                    args[2](r.data);
+                })
+            } else {
+                await this.connection.execute("sendMessage", {
+                    chat_id: args[0],
+                    text: args[1],
+                    reply_to_mesage_id: args[2]?.reply_to_mesage_id,
+                    inline_keypad: args[2]?.inline_keypad,
+                    chat_keypad: args[2]?.chat_keypad,
+                    chat_keypad_type: args[2]?.chat_keypad_type,
+                    disable_notification: [undefined, null].includes(args[2]?.disable_notification) ? false : args[2]?.disable_notification
+                })
+            }
+        } else if (args.length == 2){
+            await this.connection.execute("sendMessage", {
+                chat_id: args[0],
+                text: args[1],
+            })
+        }
     }
 
 }
 
-let nra = new NodeRubikaApi("BAIDD0ENHSSABISFPXKXFTUXTHYULOXXDBHOPBVNLGPZGTJDHQWKCUSWYSSNYMZP", { polling_interval: 103, polling: false });
+// let nra = new NodeRubikaApi("BAIDD0ENHSSABISFPXKXFTUXTHYULOXXDBHOPBVNLGPZGTJDHQWKCUSWYSSNYMZP", { polling_interval: 103, polling: false });
 
-nra.sendMessage();
-
-// nra.on("message", async (msg) => {
-//     console.log(msg)
-// })
+// nra.sendMessage(
+//     "b0FkJg90Cub0c514f5d49da683f84d16",
+//     "hi",
+//     {
+//         reply_to_message_id: 3,
+//         inline_keypad: {
+//             one_time_keyboard: false,
+//             resize_keyboard: true,
+//             rows: [
+//                 {
+//                     buttons: [
+//                         {
+//                             type: "Simple",
+//                             id: "sayHElloworld",
+//                             button_text: "HHHHH"
+//                         }
+//                     ]
+//                 }
+//             ]
+//         }
+//     }
+// )
 
 // nra.on("updatedMessage", async (yousure) => {
 //     console.log(yousure)
@@ -157,6 +216,6 @@ nra.sendMessage();
 //     console.log(a);
 // })
 
-nra.on("error", async (er) => {
-    console.log(er)
-})
+// nra.on("error", async (er) => {
+//     console.log(er)
+// })

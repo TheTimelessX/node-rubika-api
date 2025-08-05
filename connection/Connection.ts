@@ -38,7 +38,7 @@ export class Connection {
     }
 
     async execute(method: string, input: any, callback: (data: any) => void = () => {}){
-        await axios.post(`${this.url}/${method}`, JSON.stringify(input), { headers: { "Content-Type": "application/json" } }).then(async (resp) => {
+        await axios.post(`${this.url}/${method}`, input).then(async (resp) => {
             if (resp.data.status == "OK"){
                 callback(resp.data);
                 return;

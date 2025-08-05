@@ -10,10 +10,10 @@ export interface Button {
     id: string;
     type: ButtonTypes;
     button_text: string;
-    button_selection: ButtonSelection;
-    button_location: ButtonLocation;
-    button_number_picker: ButtonNumberPicker;
-    button_string_picker: ButtonStringPicker;
-    button_calendar: ButtonCalendar;
-    button_textbox: ButtonTextbox;
+    button_selection?: ButtonSelection;
+    button_location?: ButtonLocation;
+    button_number_picker?: ButtonNumberPicker;
+    button_string_picker?: ButtonStringPicker;
+    button_calendar?: ButtonCalendar;
+    button_textbox?: ButtonTextbox;
 }

@@ -1,0 +1,1 @@
+export type ChatKeypadType = "None" | "New" | "Remove";
