@@ -2,7 +2,10 @@ import { Connection } from "./connection/Connection";
 import { Update } from "./models/updates/Update";
 import { Message } from "./models/updates/Message";
 import { PaymentStatus } from "./models/PaymentStatus";
-import { SendMessageCallback, SendMessageOptions } from "./callbacks/sendMessage";
+import { BotCommand } from "./models/BotCommand";
+import { SendMessageCallback, SendMessageOptions,
+         SendPollCallback
+ } from "./callbacks/sendMessage";
 import { EventEmitter } from "events";
 
 interface ConstructorOptions {
@@ -181,17 +184,111 @@ export class NodeRubikaApi extends EventEmitter {
         }
     }
 
+    sendPoll(chat_id: string, question: string, options: string[], callback: (data: SendPollCallback) => void): Promise<void>;
+    sendPoll(chat_id: string, question: string, options: string[]): Promise<void>;
+
+    async sendPoll(...args){
+        if (args.length == 4){
+            await this.connection.execute("sendPoll", {
+                chat_id: args[0],
+                question: args[1],
+                options: args[2]
+            }, async (r) => {
+                args[3](r);
+            })
+        } else if (args.length == 3){
+            await this.connection.execute("sendPoll", {
+                chat_id: args[0],
+                question: args[1],
+                options: args[2]
+            })
+        }
+    }
+
+    setCommand(commands: BotCommand[], callback: (data: any) => void): Promise<void>;
+    setCommand(commands: BotCommand[]): Promise<void>;
+
+    async setCommand(...args){
+        if (args.length == 2){
+            await this.connection.execute("setCommands", {
+                bot_commands: args[0]
+            }, async (r) => {
+                args[1](r);
+            })
+        } else if (args.length == 1){
+            await this.connection.execute("setCommands", {
+                bot_commands: args[0]
+            })
+        }
+    }
+
 }
 
-// let nra = new NodeRubikaApi("BAIDD0ENHSSABISFPXKXFTUXTHYULOXXDBHOPBVNLGPZGTJDHQWKCUSWYSSNYMZP", { polling_interval: 103, polling: false });
+// let nra = new NodeRubikaApi("BAIDD0ENHSSABISFPXKXFTUXTHYULOXXDBHOPBVNLGPZGTJDHQWKCUSWYSSNYMZP", { polling_interval: 103, polling: true });
+
+// nra.setCommand(
+//     [{
+//         command: "say",
+//         description: "say something"
+//     }],
+//     async (x) => {
+//         console.log(x)
+//     }
+// )
+
+// nra.sendPoll(
+//     "b0FkJg90Cub0c514f5d49da683f84d16",
+//     "How you doing?",
+//     [
+//         "good",
+//         "cool",
+//         "fine",
+//         "bad"
+//     ],
+//     async (x) => {
+//         console.log(x)
+//     }
+// )
+
+// nra.on("message", async (msg) => {
+//     if (msg.text.startsWith("/start")){
+//         console.log(msg)
+//         await nra.sendMessage(
+//             "b0GPgAs0465b529387cde6e40808aecc",
+//             `Hello`
+//         )
+//     }
+// })
+
+// nra.on("message", async (msg) => {
+//     if (msg.aux_data){
+//         console.log(msg.aux_data)
+//     }
+// })
 
 // nra.sendMessage(
 //     "b0FkJg90Cub0c514f5d49da683f84d16",
 //     "hi",
 //     {
 //         reply_to_message_id: 3,
+//         // chat_keypad_type: 'New',
+//         // chat_keypad: {
+//         //     resize_keyboard: true,
+//         //     one_time_keyboard: false,
+//         //     rows: [
+//         //         {
+//         //             buttons: [
+//         //                 {
+//         //                     button_text: "Hello world",
+//         //                     type: "Simple",
+//         //                     id: "tttt"
+//         //                 }
+//         //             ]
+//         //         }
+//         //     ]
+//         // }
 //         inline_keypad: {
-//             one_time_keyboard: false,
+//             one_time_keyboard: true,
 //             resize_keyboard: true,
 //             rows: [
 //                 {
@@ -200,6 +297,20 @@ export class NodeRubikaApi extends EventEmitter {
 //                             type: "Simple",
 //                             id: "sayHElloworld",
 //                             button_text: "HHHHH"
+//                         },
+//                         {
+//                             type: "Simple",
+//                             id: "kkhh",
+//                             button_text: "okkkkk"
+//                         }
+//                     ]
+//                 },
+//                 {
+//                     buttons: [
+//                         {
+//                             type: 'Simple',
+//                             id: "No",
+//                             button_text: "close"
 //                         }
 //                     ]
 //                 }

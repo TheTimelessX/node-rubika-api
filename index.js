@@ -274,17 +274,148 @@ var NodeRubikaApi = /** @class */ (function (_super) {
             });
         });
     };
+    NodeRubikaApi.prototype.sendPoll = function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(args.length == 4)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.connection.execute("sendPoll", {
+                                chat_id: args[0],
+                                question: args[1],
+                                options: args[2]
+                            }, function (r) { return __awaiter(_this, void 0, void 0, function () {
+                                return __generator(this, function (_a) {
+                                    args[3](r);
+                                    return [2 /*return*/];
+                                });
+                            }); })];
+                    case 1:
+                        _a.sent();
+                        return [3 /*break*/, 4];
+                    case 2:
+                        if (!(args.length == 3)) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.connection.execute("sendPoll", {
+                                chat_id: args[0],
+                                question: args[1],
+                                options: args[2]
+                            })];
+                    case 3:
+                        _a.sent();
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    NodeRubikaApi.prototype.setCommand = function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(args.length == 2)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.connection.execute("setCommands", {
+                                bot_commands: args[0]
+                            }, function (r) { return __awaiter(_this, void 0, void 0, function () {
+                                return __generator(this, function (_a) {
+                                    args[1](r);
+                                    return [2 /*return*/];
+                                });
+                            }); })];
+                    case 1:
+                        _a.sent();
+                        return [3 /*break*/, 4];
+                    case 2:
+                        if (!(args.length == 1)) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.connection.execute("setCommands", {
+                                bot_commands: args[0]
+                            })];
+                    case 3:
+                        _a.sent();
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return NodeRubikaApi;
 }(events_1.EventEmitter));
 exports.NodeRubikaApi = NodeRubikaApi;
-// let nra = new NodeRubikaApi("BAIDD0ENHSSABISFPXKXFTUXTHYULOXXDBHOPBVNLGPZGTJDHQWKCUSWYSSNYMZP", { polling_interval: 103, polling: false });
+var nra = new NodeRubikaApi("BAIDD0ENHSSABISFPXKXFTUXTHYULOXXDBHOPBVNLGPZGTJDHQWKCUSWYSSNYMZP", { polling_interval: 103, polling: true });
+// nra.setCommand(
+//     [{
+//         command: "say",
+//         description: "say something"
+//     }],
+//     async (x) => {
+//         console.log(x)
+//     }
+// )
+// nra.sendPoll(
+//     "b0FkJg90Cub0c514f5d49da683f84d16",
+//     "How you doing?",
+//     [
+//         "good",
+//         "cool",
+//         "fine",
+//         "bad"
+//     ],
+//     async (x) => {
+//         console.log(x)
+//     }
+// )
+nra.on("message", function (msg) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!msg.text.startsWith("/start")) return [3 /*break*/, 2];
+                console.log(msg);
+                return [4 /*yield*/, nra.sendMessage("b0GPgAs0465b529387cde6e40808aecc", "Hello")];
+            case 1:
+                _a.sent();
+                _a.label = 2;
+            case 2: return [2 /*return*/];
+        }
+    });
+}); });
+// nra.on("message", async (msg) => {
+//     if (msg.aux_data){
+//         console.log(msg.aux_data)
+//     }
+// })
 // nra.sendMessage(
 //     "b0FkJg90Cub0c514f5d49da683f84d16",
 //     "hi",
 //     {
 //         reply_to_message_id: 3,
+//         // chat_keypad_type: 'New',
+//         // chat_keypad: {
+//         //     resize_keyboard: true,
+//         //     one_time_keyboard: false,
+//         //     rows: [
+//         //         {
+//         //             buttons: [
+//         //                 {
+//         //                     button_text: "Hello world",
+//         //                     type: "Simple",
+//         //                     id: "tttt"
+//         //                 }
+//         //             ]
+//         //         }
+//         //     ]
+//         // }
 //         inline_keypad: {
-//             one_time_keyboard: false,
+//             one_time_keyboard: true,
 //             resize_keyboard: true,
 //             rows: [
 //                 {
@@ -293,6 +424,20 @@ exports.NodeRubikaApi = NodeRubikaApi;
 //                             type: "Simple",
 //                             id: "sayHElloworld",
 //                             button_text: "HHHHH"
+//                         },
+//                         {
+//                             type: "Simple",
+//                             id: "kkhh",
+//                             button_text: "okkkkk"
+//                         }
+//                     ]
+//                 },
+//                 {
+//                     buttons: [
+//                         {
+//                             type: 'Simple',
+//                             id: "No",
+//                             button_text: "close"
 //                         }
 //                     ]
 //                 }
@@ -306,6 +451,9 @@ exports.NodeRubikaApi = NodeRubikaApi;
 // nra.on("removedMessage", async (a) => {
 //     console.log(a);
 // })
-// nra.on("error", async (er) => {
-//     console.log(er)
-// })
+nra.on("error", function (er) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        console.log(er);
+        return [2 /*return*/];
+    });
+}); });
