@@ -2,6 +2,10 @@ import { SendMessageCallback, SendMessageOptions, SendPollCallback } from "./cal
 import { SendLocationCallback, SendLocationOptions } from "./callbacks/sendLocation";
 import { SendContactCallback, SendContactOptions } from "./callbacks/sendContact";
 import { ForwardMessageCallback, ForwardMessageOptions } from "./callbacks/forwardMessage";
+import {
+    EditMessageTextCallback, EditMessageTextOptions,
+    EditMessageKeypadOptions, EditMessageKeypadCallback
+} from "./callbacks/editMessageText";
 import { Chat } from "./models/Chat";
 import { Connection } from "./connection/Connection";
 import { Update } from "./models/updates/Update";
@@ -16,8 +20,8 @@ interface ConstructorOptions {
 }
 
 interface RemovedMessage {
-    message_id: string;
-    chat_id: string;
+    message_id: string | number;
+    chat_id: string | number;
 }
 
 interface ActualEvents {
@@ -141,10 +145,10 @@ export class NodeRubikaApi extends EventEmitter {
         }, this.opts.polling_interval);
     }
 
-    sendMessage(chat_id: string, text: string, options: SendMessageOptions, callback: (data: SendMessageCallback) => void): Promise<void>;
-    sendMessage(chat_id: string, text: string, options: SendMessageOptions): Promise<void>;
-    sendMessage(chat_id: string, text: string, callback: (data: SendMessageCallback) => void): Promise<void>;
-    sendMessage(chat_id: string, text: string): Promise<void>;
+    sendMessage(chat_id: string | number, text: string, options: SendMessageOptions, callback: (data: SendMessageCallback) => void): Promise<void>;
+    sendMessage(chat_id: string | number, text: string, options: SendMessageOptions): Promise<void>;
+    sendMessage(chat_id: string | number, text: string, callback: (data: SendMessageCallback) => void): Promise<void>;
+    sendMessage(chat_id: string | number, text: string): Promise<void>;
 
     async sendMessage(...args){
         if (args.length == 4){
@@ -186,8 +190,8 @@ export class NodeRubikaApi extends EventEmitter {
         }
     }
 
-    sendPoll(chat_id: string, question: string, options: string[], callback: (data: SendPollCallback) => void): Promise<void>;
-    sendPoll(chat_id: string, question: string, options: string[]): Promise<void>;
+    sendPoll(chat_id: string | number, question: string, options: string[], callback: (data: SendPollCallback) => void): Promise<void>;
+    sendPoll(chat_id: string | number, question: string, options: string[]): Promise<void>;
 
     async sendPoll(...args){
         if (args.length == 4){
@@ -224,10 +228,10 @@ export class NodeRubikaApi extends EventEmitter {
         }
     }
 
-    sendLocation(chat_id: string, latitude: string, longitude: string, options: SendLocationOptions, callback: (data: SendLocationCallback) => void): Promise<void>;
-    sendLocation(chat_id: string, latitude: string, longitude: string, options: SendLocationOptions): Promise<void>;
-    sendLocation(chat_id: string, latitude: string, longitude: string, callback: (data: SendLocationCallback) => void): Promise<void>;
-    sendLocation(chat_id: string, latitude: string, longitude: string): Promise<void>;
+    sendLocation(chat_id: string | number, latitude: string, longitude: string, options: SendLocationOptions, callback: (data: SendLocationCallback) => void): Promise<void>;
+    sendLocation(chat_id: string | number, latitude: string, longitude: string, options: SendLocationOptions): Promise<void>;
+    sendLocation(chat_id: string | number, latitude: string, longitude: string, callback: (data: SendLocationCallback) => void): Promise<void>;
+    sendLocation(chat_id: string | number, latitude: string, longitude: string): Promise<void>;
 
     async sendLocation(...args){
         if (args.length == 5){
@@ -273,10 +277,10 @@ export class NodeRubikaApi extends EventEmitter {
         }
     }
 
-    sendContact(chat_id: string, first_name: string, last_name: string, phone_number: string, options: SendContactOptions, callback: (data: SendContactCallback) => void): Promise<void>;
-    sendContact(chat_id: string, first_name: string, last_name: string, phone_number: string, options: SendContactOptions): Promise<void>;
-    sendContact(chat_id: string, first_name: string, last_name: string, phone_number: string, callback: (data: SendContactCallback) => void): Promise<void>;
-    sendContact(chat_id: string, first_name: string, last_name: string, phone_number: string): Promise<void>;
+    sendContact(chat_id: string | number, first_name: string, last_name: string, phone_number: string, options: SendContactOptions, callback: (data: SendContactCallback) => void): Promise<void>;
+    sendContact(chat_id: string | number, first_name: string, last_name: string, phone_number: string, options: SendContactOptions): Promise<void>;
+    sendContact(chat_id: string | number, first_name: string, last_name: string, phone_number: string, callback: (data: SendContactCallback) => void): Promise<void>;
+    sendContact(chat_id: string | number, first_name: string, last_name: string, phone_number: string): Promise<void>;
 
     async sendContact(...args){
         if (args.length == 6){
@@ -326,8 +330,8 @@ export class NodeRubikaApi extends EventEmitter {
         }
     }
 
-    getChat(chat_id: string, callback: (data: Chat) => void): Promise<void>;
-    getChat(chat_id: string): Promise<void>;
+    getChat(chat_id: string | number, callback: (data: Chat) => void): Promise<void>;
+    getChat(chat_id: string | number): Promise<void>;
 
     async getChat(...args){
         if (args.length == 2){
@@ -343,8 +347,8 @@ export class NodeRubikaApi extends EventEmitter {
         }
     }
 
-    forwardMessage(chat_id: string, options: ForwardMessageOptions, callback: (data: ForwardMessageCallback) => void): Promise<void>;
-    forwardMessage(chat_id: string, options: ForwardMessageOptions): Promise<void>;
+    forwardMessage(chat_id: string | number, options: ForwardMessageOptions, callback: (data: ForwardMessageCallback) => void): Promise<void>;
+    forwardMessage(chat_id: string | number, options: ForwardMessageOptions): Promise<void>;
 
     async forwardMessage(...args){
         if (!args[1].from_chat_id){
@@ -368,9 +372,89 @@ export class NodeRubikaApi extends EventEmitter {
         }
     }
 
+    editMessageText(text: string, options: EditMessageTextOptions, callback: (data: EditMessageTextCallback) => void): Promise<void>;
+    editMessageText(text: string, options: EditMessageTextOptions): Promise<void>;
+
+    async editMessageText(...args){
+        if (!args[1].chat_id || !args[1].message_id){
+            throw new Error(`there is no 'chat_id' or 'message_id' parameter in "editMessageText" ( second arg )`);
+        }
+
+        if (args.length == 3){
+            await this.connection.execute("editMessageText", {
+                text: args[0],
+                chat_id: args[1].chat_id,
+                message_id: args[1].message_id
+            }, async (r) => {
+                args[2](r)
+            })
+        } else if (args.length == 2){
+            await this.connection.execute("editMessageText", {
+                text: args[0],
+                chat_id: args[1].chat_id,
+                message_id: args[1].message_id
+            })
+        }
+    }
+
+    editMessageKeypad(chat_id: string | number, options: EditMessageKeypadOptions, callback: (data: EditMessageKeypadCallback) => void): Promise<void>;
+    editMessageKeypad(chat_id: string | number, options: EditMessageKeypadOptions): Promise<void>;
+
+    async editMessageKeypad(...args){
+        if (!args[1].chat_id || !args[1].message_id){
+            throw new Error(`there is no 'message_id' or 'inline_keypad' parameter in "editMessageKeypad" ( second arg )`);
+        }
+
+        if (args.length == 3){
+            await this.connection.execute("editMessageKeypad", {
+                chat_id: args[0],
+                message_id: args[1].message_id,
+                inline_keypad: args[1].inline_keypad
+            }, async (r) => {
+                args[2](r);
+            })
+        } else if (args.length == 2){
+            await this.connection.execute("editMessageKeypad", {
+                chat_id: args[0],
+                message_id: args[1].message_id,
+                inline_keypad: args[1].inline_keypad
+            })
+        }
+    }
+
+    deleteMessage(chat_id: string | number, message_id: string | number, callback: (data: any) => void): Promise<void>;
+    deleteMessage(chat_id: string | number, message_id: string | number): Promise<void>;
+
+    async deleteMessage(...args){
+        if (args.length == 3){
+            await this.connection.execute("deleteMessage", {
+                chat_id: args[0],
+                message_id: args[1],
+            }, async (r) => {
+                args[2](r);
+            })
+        } else if (args.length == 2){
+            await this.connection.execute("deleteMessage", {
+                chat_id: args[0],
+                message_id: args[1],
+            })  
+        }
+    }
 }
 
 // let nra = new NodeRubikaApi("BAIDD0ENHSSABISFPXKXFTUXTHYULOXXDBHOPBVNLGPZGTJDHQWKCUSWYSSNYMZP", { polling_interval: 103, polling: true });
+// nra.deleteMessage("b0FkJg90Cub0c514f5d49da683f84d16",
+//     1375947995037921000, async (r) => {
+//     console.log(r)
+// })
+
+// nra.sendMessage(
+//     "b0FkJg90Cub0c514f5d49da683f84d16",
+//     "Hello world 1",
+//     async (r) => {
+//         console.log(r) // { message_id: 1375947995037921000 }
+//     }
+// )
 
 // nra.setCommand(
 //     [{

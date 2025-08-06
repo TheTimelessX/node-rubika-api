@@ -52,19 +52,31 @@ var Connection = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, axios.post("https://botapi.rubika.ir/v3/".concat(this.token, "/getUpdates"), "{}", { headers: { "Content-Type": "application/json" } }).then(function (resp) { return __awaiter(_this, void 0, void 0, function () {
                             return __generator(this, function (_a) {
-                                if (resp.data.status == "OK") {
-                                    callback({
-                                        updates: resp.data.data.updates,
-                                        next_offset_id: resp.data.data.next_offset_id
-                                    });
-                                    return [2 /*return*/];
+                                if (resp.data) {
+                                    if (resp.status == 200) {
+                                        if (resp.data['status'] == "OK") {
+                                            callback({
+                                                updates: resp.data['data']['updates'],
+                                                next_offset_id: resp.data['data']['next_offset_id']
+                                            });
+                                            return [2 /*return*/];
+                                        }
+                                        else {
+                                            callback({
+                                                updates: [],
+                                                next_offset_id: ""
+                                            });
+                                            this.theEmitter.emit("error", resp.data);
+                                            return [2 /*return*/];
+                                        }
+                                    }
+                                    else {
+                                        this.theEmitter.emit("error", resp.data);
+                                        return [2 /*return*/];
+                                    }
                                 }
                                 else {
-                                    callback({
-                                        updates: [],
-                                        next_offset_id: ""
-                                    });
-                                    this.theEmitter.emit("error", resp.data);
+                                    this.theEmitter.emit("error", "no data found");
                                     return [2 /*return*/];
                                 }
                                 return [2 /*return*/];
@@ -85,12 +97,24 @@ var Connection = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, axios.post("".concat(this.url, "/").concat(method), input).then(function (resp) { return __awaiter(_this, void 0, void 0, function () {
                             return __generator(this, function (_a) {
-                                if (resp.data.status == "OK") {
-                                    callback(resp.data);
-                                    return [2 /*return*/];
+                                if (resp.data) {
+                                    if (resp.status == 200) {
+                                        if (resp.data['status'] == "OK") {
+                                            callback(resp.data);
+                                            return [2 /*return*/];
+                                        }
+                                        else {
+                                            this.theEmitter.emit("error", resp.data);
+                                            return [2 /*return*/];
+                                        }
+                                    }
+                                    else {
+                                        this.theEmitter.emit("error", resp.data);
+                                        return [2 /*return*/];
+                                    }
                                 }
                                 else {
-                                    this.theEmitter.emit("error", resp.data);
+                                    this.theEmitter.emit("error", "no data found");
                                     return [2 /*return*/];
                                 }
                                 return [2 /*return*/];

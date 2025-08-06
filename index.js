@@ -578,10 +578,142 @@ var NodeRubikaApi = /** @class */ (function (_super) {
             });
         });
     };
+    NodeRubikaApi.prototype.editMessageText = function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!args[1].chat_id || !args[1].message_id) {
+                            throw new Error("there is no 'chat_id' or 'message_id' parameter in \"editMessageText\" ( second arg )");
+                        }
+                        if (!(args.length == 3)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.connection.execute("editMessageText", {
+                                text: args[0],
+                                chat_id: args[1].chat_id,
+                                message_id: args[1].message_id
+                            }, function (r) { return __awaiter(_this, void 0, void 0, function () {
+                                return __generator(this, function (_a) {
+                                    args[2](r);
+                                    return [2 /*return*/];
+                                });
+                            }); })];
+                    case 1:
+                        _a.sent();
+                        return [3 /*break*/, 4];
+                    case 2:
+                        if (!(args.length == 2)) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.connection.execute("editMessageText", {
+                                text: args[0],
+                                chat_id: args[1].chat_id,
+                                message_id: args[1].message_id
+                            })];
+                    case 3:
+                        _a.sent();
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    NodeRubikaApi.prototype.editMessageKeypad = function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!args[1].chat_id || !args[1].message_id) {
+                            throw new Error("there is no 'message_id' or 'inline_keypad' parameter in \"editMessageKeypad\" ( second arg )");
+                        }
+                        if (!(args.length == 3)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.connection.execute("editMessageKeypad", {
+                                chat_id: args[0],
+                                message_id: args[1].message_id,
+                                inline_keypad: args[1].inline_keypad
+                            }, function (r) { return __awaiter(_this, void 0, void 0, function () {
+                                return __generator(this, function (_a) {
+                                    args[2](r);
+                                    return [2 /*return*/];
+                                });
+                            }); })];
+                    case 1:
+                        _a.sent();
+                        return [3 /*break*/, 4];
+                    case 2:
+                        if (!(args.length == 2)) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.connection.execute("editMessageKeypad", {
+                                chat_id: args[0],
+                                message_id: args[1].message_id,
+                                inline_keypad: args[1].inline_keypad
+                            })];
+                    case 3:
+                        _a.sent();
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    NodeRubikaApi.prototype.deleteMessage = function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(args.length == 3)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.connection.execute("deleteMessage", {
+                                chat_id: args[0],
+                                message_id: args[1],
+                            }, function (r) { return __awaiter(_this, void 0, void 0, function () {
+                                return __generator(this, function (_a) {
+                                    args[2](r);
+                                    return [2 /*return*/];
+                                });
+                            }); })];
+                    case 1:
+                        _a.sent();
+                        return [3 /*break*/, 4];
+                    case 2:
+                        if (!(args.length == 2)) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.connection.execute("deleteMessage", {
+                                chat_id: args[0],
+                                message_id: args[1],
+                            })];
+                    case 3:
+                        _a.sent();
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return NodeRubikaApi;
 }(events_1.EventEmitter));
 exports.NodeRubikaApi = NodeRubikaApi;
 // let nra = new NodeRubikaApi("BAIDD0ENHSSABISFPXKXFTUXTHYULOXXDBHOPBVNLGPZGTJDHQWKCUSWYSSNYMZP", { polling_interval: 103, polling: true });
+// nra.deleteMessage("b0FkJg90Cub0c514f5d49da683f84d16",
+//     1375947995037921000, async (r) => {
+//     console.log(r)
+// })
+// nra.sendMessage(
+//     "b0FkJg90Cub0c514f5d49da683f84d16",
+//     "Hello world 1",
+//     async (r) => {
+//         console.log(r) // { message_id: 1375947995037921000 }
+//     }
+// )
 // nra.setCommand(
 //     [{
 //         command: "say",

@@ -20,18 +20,28 @@ export class Connection {
 
     async receiveUpdate(callback: (message: UpdateRaw) => void = () => {}){
         await axios.post(`https://botapi.rubika.ir/v3/${this.token}/getUpdates`, "{}", { headers: { "Content-Type": "application/json" } }).then(async (resp) => {
-            if (resp.data.status == "OK"){
-                callback({
-                    updates: resp.data.data.updates,
-                    next_offset_id: resp.data.data.next_offset_id
-                });
-                return;
+            if (resp.data){
+                if (resp.status == 200){
+                    if (resp.data['status'] == "OK"){
+                        callback({
+                            updates: resp.data['data']['updates'],
+                            next_offset_id: resp.data['data']['next_offset_id']
+                        });
+                        return;
+                    } else {
+                        callback({
+                            updates: [],
+                            next_offset_id: ""
+                        });
+                        this.theEmitter.emit("error", resp.data);
+                        return;
+                    }
+                } else {
+                    this.theEmitter.emit("error", resp.data);
+                    return;
+                }
             } else {
-                callback({
-                    updates: [],
-                    next_offset_id: ""
-                });
-                this.theEmitter.emit("error", resp.data);
+                this.theEmitter.emit("error", "no data found");
                 return;
             }
         })
@@ -39,11 +49,21 @@ export class Connection {
 
     async execute(method: string, input: any, callback: (data: any) => void = () => {}){
         await axios.post(`${this.url}/${method}`, input).then(async (resp) => {
-            if (resp.data.status == "OK"){
-                callback(resp.data);
-                return;
+            if (resp.data){
+                if (resp.status == 200){
+                    if (resp.data['status'] == "OK"){
+                        callback(resp.data);
+                        return;
+                    } else {
+                        this.theEmitter.emit("error", resp.data);
+                        return;
+                    }
+                } else {
+                    this.theEmitter.emit("error", resp.data);
+                    return;
+                }
             } else {
-                this.theEmitter.emit("error", resp.data);
+                this.theEmitter.emit("error", "no data found");
                 return;
             }
         })
