@@ -348,10 +348,240 @@ var NodeRubikaApi = /** @class */ (function (_super) {
             });
         });
     };
+    NodeRubikaApi.prototype.sendLocation = function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
+            return __generator(this, function (_o) {
+                switch (_o.label) {
+                    case 0:
+                        if (!(args.length == 5)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.connection.execute("sendLocation", {
+                                chat_id: args[0],
+                                latitude: args[1],
+                                longitude: args[2],
+                                reply_to_mesage_id: (_a = args[3]) === null || _a === void 0 ? void 0 : _a.reply_to_mesage_id,
+                                inline_keypad: (_b = args[3]) === null || _b === void 0 ? void 0 : _b.inline_keypad,
+                                chat_keypad: (_c = args[3]) === null || _c === void 0 ? void 0 : _c.chat_keypad,
+                                chat_keypad_type: (_d = args[3]) === null || _d === void 0 ? void 0 : _d.chat_keypad_type,
+                                disable_notification: [undefined, null].includes((_e = args[3]) === null || _e === void 0 ? void 0 : _e.disable_notification) ? false : (_f = args[3]) === null || _f === void 0 ? void 0 : _f.disable_notification
+                            }, function (r) { return __awaiter(_this, void 0, void 0, function () {
+                                return __generator(this, function (_a) {
+                                    args[4](r);
+                                    return [2 /*return*/];
+                                });
+                            }); })];
+                    case 1:
+                        _o.sent();
+                        return [3 /*break*/, 9];
+                    case 2:
+                        if (!(args.length == 4)) return [3 /*break*/, 7];
+                        if (!(typeof args[3] == 'function')) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.connection.execute("sendLocation", {
+                                chat_id: args[0],
+                                latitude: args[1],
+                                longitude: args[2]
+                            }, function (r) { return __awaiter(_this, void 0, void 0, function () {
+                                return __generator(this, function (_a) {
+                                    args[3](r);
+                                    return [2 /*return*/];
+                                });
+                            }); })];
+                    case 3:
+                        _o.sent();
+                        return [3 /*break*/, 6];
+                    case 4: return [4 /*yield*/, this.connection.execute("sendLocation", {
+                            chat_id: args[0],
+                            latitude: args[1],
+                            longitude: args[2],
+                            reply_to_mesage_id: (_g = args[3]) === null || _g === void 0 ? void 0 : _g.reply_to_mesage_id,
+                            inline_keypad: (_h = args[3]) === null || _h === void 0 ? void 0 : _h.inline_keypad,
+                            chat_keypad: (_j = args[3]) === null || _j === void 0 ? void 0 : _j.chat_keypad,
+                            chat_keypad_type: (_k = args[3]) === null || _k === void 0 ? void 0 : _k.chat_keypad_type,
+                            disable_notification: [undefined, null].includes((_l = args[3]) === null || _l === void 0 ? void 0 : _l.disable_notification) ? false : (_m = args[3]) === null || _m === void 0 ? void 0 : _m.disable_notification
+                        })];
+                    case 5:
+                        _o.sent();
+                        _o.label = 6;
+                    case 6: return [3 /*break*/, 9];
+                    case 7:
+                        if (!(args.length == 3)) return [3 /*break*/, 9];
+                        return [4 /*yield*/, this.connection.execute("sendLocation", {
+                                chat_id: args[0],
+                                latitude: args[1],
+                                longitude: args[2]
+                            })];
+                    case 8:
+                        _o.sent();
+                        _o.label = 9;
+                    case 9: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    NodeRubikaApi.prototype.sendContact = function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
+            return __generator(this, function (_o) {
+                switch (_o.label) {
+                    case 0:
+                        if (!(args.length == 6)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.connection.execute("sendContact", {
+                                chat_id: args[0],
+                                first_name: args[1],
+                                last_name: args[2],
+                                phone_number: args[3],
+                                reply_to_mesage_id: (_a = args[4]) === null || _a === void 0 ? void 0 : _a.reply_to_mesage_id,
+                                inline_keypad: (_b = args[4]) === null || _b === void 0 ? void 0 : _b.inline_keypad,
+                                chat_keypad: (_c = args[4]) === null || _c === void 0 ? void 0 : _c.chat_keypad,
+                                chat_keypad_type: (_d = args[4]) === null || _d === void 0 ? void 0 : _d.chat_keypad_type,
+                                disable_notification: [undefined, null].includes((_e = args[4]) === null || _e === void 0 ? void 0 : _e.disable_notification) ? false : (_f = args[4]) === null || _f === void 0 ? void 0 : _f.disable_notification
+                            }, function (r) { return __awaiter(_this, void 0, void 0, function () {
+                                return __generator(this, function (_a) {
+                                    args[5](r);
+                                    return [2 /*return*/];
+                                });
+                            }); })];
+                    case 1:
+                        _o.sent();
+                        return [3 /*break*/, 9];
+                    case 2:
+                        if (!(args.length == 5)) return [3 /*break*/, 7];
+                        if (!(typeof args[4] == 'function')) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.connection.execute("sendContact", {
+                                chat_id: args[0],
+                                first_name: args[1],
+                                last_name: args[2],
+                                phone_number: args[3]
+                            }, function (r) { return __awaiter(_this, void 0, void 0, function () {
+                                return __generator(this, function (_a) {
+                                    args[4](r);
+                                    return [2 /*return*/];
+                                });
+                            }); })];
+                    case 3:
+                        _o.sent();
+                        return [3 /*break*/, 6];
+                    case 4: return [4 /*yield*/, this.connection.execute("sendContact", {
+                            chat_id: args[0],
+                            first_name: args[1],
+                            last_name: args[2],
+                            phone_number: args[3],
+                            reply_to_mesage_id: (_g = args[4]) === null || _g === void 0 ? void 0 : _g.reply_to_mesage_id,
+                            inline_keypad: (_h = args[4]) === null || _h === void 0 ? void 0 : _h.inline_keypad,
+                            chat_keypad: (_j = args[4]) === null || _j === void 0 ? void 0 : _j.chat_keypad,
+                            chat_keypad_type: (_k = args[4]) === null || _k === void 0 ? void 0 : _k.chat_keypad_type,
+                            disable_notification: [undefined, null].includes((_l = args[4]) === null || _l === void 0 ? void 0 : _l.disable_notification) ? false : (_m = args[4]) === null || _m === void 0 ? void 0 : _m.disable_notification
+                        })];
+                    case 5:
+                        _o.sent();
+                        _o.label = 6;
+                    case 6: return [3 /*break*/, 9];
+                    case 7: return [4 /*yield*/, this.connection.execute("sendContact", {
+                            chat_id: args[0],
+                            first_name: args[1],
+                            last_name: args[2],
+                            phone_number: args[3]
+                        })];
+                    case 8:
+                        _o.sent();
+                        _o.label = 9;
+                    case 9: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    NodeRubikaApi.prototype.getChat = function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(args.length == 2)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.connection.execute("getChat", {
+                                chat_id: args[0]
+                            }, function (r) { return __awaiter(_this, void 0, void 0, function () {
+                                return __generator(this, function (_a) {
+                                    args[1](r);
+                                    return [2 /*return*/];
+                                });
+                            }); })];
+                    case 1:
+                        _a.sent();
+                        return [3 /*break*/, 4];
+                    case 2:
+                        if (!(args.length == 1)) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.connection.execute("getChat", {
+                                chat_id: args[0]
+                            })];
+                    case 3:
+                        _a.sent();
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    NodeRubikaApi.prototype.forwardMessage = function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            var _a, _b, _c, _d;
+            return __generator(this, function (_e) {
+                switch (_e.label) {
+                    case 0:
+                        if (!args[1].from_chat_id) {
+                            throw new Error("there is no 'from_chat_id' parameter in \"forwardMessage\" ( second arg )");
+                        }
+                        if (!(args.length == 3)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.connection.execute("forwardMessage", {
+                                to_chat_id: args[0],
+                                from_chat_id: args[1].from_chat_id,
+                                disable_notification: [undefined, null].includes((_a = args[1]) === null || _a === void 0 ? void 0 : _a.disable_notification) ? false : (_b = args[1]) === null || _b === void 0 ? void 0 : _b.disable_notification
+                            }, function (r) { return __awaiter(_this, void 0, void 0, function () {
+                                return __generator(this, function (_a) {
+                                    args[2](r);
+                                    return [2 /*return*/];
+                                });
+                            }); })];
+                    case 1:
+                        _e.sent();
+                        return [3 /*break*/, 4];
+                    case 2:
+                        if (!(args.length == 2)) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.connection.execute("forwardMessage", {
+                                to_chat_id: args[0],
+                                from_chat_id: args[1].from_chat_id,
+                                disable_notification: [undefined, null].includes((_c = args[1]) === null || _c === void 0 ? void 0 : _c.disable_notification) ? false : (_d = args[1]) === null || _d === void 0 ? void 0 : _d.disable_notification
+                            })];
+                    case 3:
+                        _e.sent();
+                        _e.label = 4;
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return NodeRubikaApi;
 }(events_1.EventEmitter));
 exports.NodeRubikaApi = NodeRubikaApi;
-var nra = new NodeRubikaApi("BAIDD0ENHSSABISFPXKXFTUXTHYULOXXDBHOPBVNLGPZGTJDHQWKCUSWYSSNYMZP", { polling_interval: 103, polling: true });
+// let nra = new NodeRubikaApi("BAIDD0ENHSSABISFPXKXFTUXTHYULOXXDBHOPBVNLGPZGTJDHQWKCUSWYSSNYMZP", { polling_interval: 103, polling: true });
 // nra.setCommand(
 //     [{
 //         command: "say",
@@ -374,20 +604,15 @@ var nra = new NodeRubikaApi("BAIDD0ENHSSABISFPXKXFTUXTHYULOXXDBHOPBVNLGPZGTJDHQW
 //         console.log(x)
 //     }
 // )
-nra.on("message", function (msg) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                if (!msg.text.startsWith("/start")) return [3 /*break*/, 2];
-                console.log(msg);
-                return [4 /*yield*/, nra.sendMessage("b0GPgAs0465b529387cde6e40808aecc", "Hello")];
-            case 1:
-                _a.sent();
-                _a.label = 2;
-            case 2: return [2 /*return*/];
-        }
-    });
-}); });
+// nra.on("message", async (msg) => {
+//     if (msg.text.startsWith("/start")){
+//         console.log(msg)
+//         await nra.sendMessage(
+//             "b0GPgAs0465b529387cde6e40808aecc",
+//             `Hello`
+//         )
+//     }
+// })
 // nra.on("message", async (msg) => {
 //     if (msg.aux_data){
 //         console.log(msg.aux_data)
@@ -451,9 +676,6 @@ nra.on("message", function (msg) { return __awaiter(void 0, void 0, void 0, func
 // nra.on("removedMessage", async (a) => {
 //     console.log(a);
 // })
-nra.on("error", function (er) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        console.log(er);
-        return [2 /*return*/];
-    });
-}); });
+// nra.on("error", async (er) => {
+//     console.log(er)
+// })
