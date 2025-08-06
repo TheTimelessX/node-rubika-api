@@ -1,11 +1,13 @@
+import { SendMessageCallback, SendMessageOptions, SendPollCallback } from "./callbacks/sendMessage";
+import { SendLocationCallback, SendLocationOptions } from "./callbacks/sendLocation";
+import { SendContactCallback, SendContactOptions } from "./callbacks/sendContact";
+import { ForwardMessageCallback, ForwardMessageOptions } from "./callbacks/forwardMessage";
+import { Chat } from "./models/Chat";
 import { Connection } from "./connection/Connection";
 import { Update } from "./models/updates/Update";
 import { Message } from "./models/updates/Message";
 import { PaymentStatus } from "./models/PaymentStatus";
 import { BotCommand } from "./models/BotCommand";
-import { SendMessageCallback, SendMessageOptions,
-         SendPollCallback
- } from "./callbacks/sendMessage";
 import { EventEmitter } from "events";
 
 interface ConstructorOptions {
@@ -218,6 +220,150 @@ export class NodeRubikaApi extends EventEmitter {
         } else if (args.length == 1){
             await this.connection.execute("setCommands", {
                 bot_commands: args[0]
+            })
+        }
+    }
+
+    sendLocation(chat_id: string, latitude: string, longitude: string, options: SendLocationOptions, callback: (data: SendLocationCallback) => void): Promise<void>;
+    sendLocation(chat_id: string, latitude: string, longitude: string, options: SendLocationOptions): Promise<void>;
+    sendLocation(chat_id: string, latitude: string, longitude: string, callback: (data: SendLocationCallback) => void): Promise<void>;
+    sendLocation(chat_id: string, latitude: string, longitude: string): Promise<void>;
+
+    async sendLocation(...args){
+        if (args.length == 5){
+            await this.connection.execute("sendLocation", {
+                chat_id: args[0],
+                latitude: args[1],
+                longitude: args[2],
+                reply_to_mesage_id: args[3]?.reply_to_mesage_id,
+                inline_keypad: args[3]?.inline_keypad,
+                chat_keypad: args[3]?.chat_keypad,
+                chat_keypad_type: args[3]?.chat_keypad_type,
+                disable_notification: [undefined, null].includes(args[3]?.disable_notification) ? false : args[3]?.disable_notification
+            }, async (r) => {
+                args[4](r);
+            })
+        } else if (args.length == 4){
+            if (typeof args[3] == 'function'){
+                await this.connection.execute("sendLocation", {
+                    chat_id: args[0],
+                    latitude: args[1],
+                    longitude: args[2]
+                }, async (r) => {
+                    args[3](r);
+                })
+            } else {
+                await this.connection.execute("sendLocation", {
+                    chat_id: args[0],
+                    latitude: args[1],
+                    longitude: args[2],
+                    reply_to_mesage_id: args[3]?.reply_to_mesage_id,
+                    inline_keypad: args[3]?.inline_keypad,
+                    chat_keypad: args[3]?.chat_keypad,
+                    chat_keypad_type: args[3]?.chat_keypad_type,
+                    disable_notification: [undefined, null].includes(args[3]?.disable_notification) ? false : args[3]?.disable_notification
+                })
+            }
+        } else if (args.length == 3){
+            await this.connection.execute("sendLocation", {
+                chat_id: args[0],
+                latitude: args[1],
+                longitude: args[2]
+            })
+        }
+    }
+
+    sendContact(chat_id: string, first_name: string, last_name: string, phone_number: string, options: SendContactOptions, callback: (data: SendContactCallback) => void): Promise<void>;
+    sendContact(chat_id: string, first_name: string, last_name: string, phone_number: string, options: SendContactOptions): Promise<void>;
+    sendContact(chat_id: string, first_name: string, last_name: string, phone_number: string, callback: (data: SendContactCallback) => void): Promise<void>;
+    sendContact(chat_id: string, first_name: string, last_name: string, phone_number: string): Promise<void>;
+
+    async sendContact(...args){
+        if (args.length == 6){
+            await this.connection.execute("sendContact", {
+                chat_id: args[0],
+                first_name: args[1],
+                last_name: args[2],
+                phone_number: args[3],
+                reply_to_mesage_id: args[4]?.reply_to_mesage_id,
+                inline_keypad: args[4]?.inline_keypad,
+                chat_keypad: args[4]?.chat_keypad,
+                chat_keypad_type: args[4]?.chat_keypad_type,
+                disable_notification: [undefined, null].includes(args[4]?.disable_notification) ? false : args[4]?.disable_notification
+            }, async (r) => {
+                args[5](r);
+            })
+        } else if (args.length == 5){
+            if (typeof args[4] == 'function'){
+                await this.connection.execute("sendContact", {
+                    chat_id: args[0],
+                    first_name: args[1],
+                    last_name: args[2],
+                    phone_number: args[3]
+                }, async (r) => {
+                    args[4](r);
+                })
+            } else {
+                await this.connection.execute("sendContact", {
+                    chat_id: args[0],
+                    first_name: args[1],
+                    last_name: args[2],
+                    phone_number: args[3],
+                    reply_to_mesage_id: args[4]?.reply_to_mesage_id,
+                    inline_keypad: args[4]?.inline_keypad,
+                    chat_keypad: args[4]?.chat_keypad,
+                    chat_keypad_type: args[4]?.chat_keypad_type,
+                    disable_notification: [undefined, null].includes(args[4]?.disable_notification) ? false : args[4]?.disable_notification
+                })
+            }
+        } else {
+            await this.connection.execute("sendContact", {
+                chat_id: args[0],
+                first_name: args[1],
+                last_name: args[2],
+                phone_number: args[3]
+            })
+        }
+    }
+
+    getChat(chat_id: string, callback: (data: Chat) => void): Promise<void>;
+    getChat(chat_id: string): Promise<void>;
+
+    async getChat(...args){
+        if (args.length == 2){
+            await this.connection.execute("getChat", {
+                chat_id: args[0]
+            }, async (r) => {
+                args[1](r);
+            })
+        } else if (args.length == 1){
+            await this.connection.execute("getChat", {
+                chat_id: args[0]
+            })
+        }
+    }
+
+    forwardMessage(chat_id: string, options: ForwardMessageOptions, callback: (data: ForwardMessageCallback) => void): Promise<void>;
+    forwardMessage(chat_id: string, options: ForwardMessageOptions): Promise<void>;
+
+    async forwardMessage(...args){
+        if (!args[1].from_chat_id){
+            throw new Error(`there is no 'from_chat_id' parameter in "forwardMessage" ( second arg )`);
+        }
+
+        if (args.length == 3){
+            await this.connection.execute("forwardMessage", {
+                to_chat_id: args[0],
+                from_chat_id: args[1].from_chat_id,
+                disable_notification: [undefined, null].includes(args[1]?.disable_notification) ? false : args[1]?.disable_notification
+            }, async (r) => {
+                args[2](r);
+            })
+        } else if (args.length == 2){
+            await this.connection.execute("forwardMessage", {
+                to_chat_id: args[0],
+                from_chat_id: args[1].from_chat_id,
+                disable_notification: [undefined, null].includes(args[1]?.disable_notification) ? false : args[1]?.disable_notification
             })
         }
     }
